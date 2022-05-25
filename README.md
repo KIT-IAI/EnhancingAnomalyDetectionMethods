@@ -16,17 +16,21 @@ Set up a virtual environment using e.g. venv (`python -m venv venv`) or Anaconda
 
 If you do not have any data available, you can download exemplary data by executing `python download.py`. This script downloads and unpacks the [ElectricityLoadDiagrams20112014 Data Set](https://archive.ics.uci.edu/ml/datasets/ElectricityLoadDiagrams20112014) from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/) as CSV file.
 
+### 3. Create Data with Synthetic Anomalies (optional)
+
+To create data with synthetic anomalies, you may either take a look into [AnomalyInsertion](https://github.com/KIT-IAI/GeneratingSyntheticEnergyPowerAnomalies) to generate technical anomalies or you use the generation_pipeine in the folder unusual_behaviour_ts_generation.
+
 ## Enhancing Anomaly Detection Methods
 
 Finally, you can enhance anomaly detection methods for energy time series.
 
 ### Input
 
-To ...
+To start the pipeline you can either use one of the scripts defined in the folder scripts or you can start run_classifiers or run_unsupervised_methods directly.  To start them directly consider to take a look on the needed command line arguments.
 
 ### Output
 
-After running the command, the pipeline returns 
+After running the command, the pipeline returns a folder called results/unusual or results/technical where the results are stored.
 
 
 ## Funding
