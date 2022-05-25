@@ -11,6 +11,15 @@ current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfra
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
+from inn_knn_pipeline import get_trained_knns
+from inn_lr_pipeline import get_trained_lrs
+from inn_mlp_pipeline import get_trained_mlps
+from inn_svc_pipeline import get_trained_svcs
+from inn_nb_pipeline import get_trained_nbs
+from inn_rf_pipeline import get_trained_rfs
+from inn_xgboost_pipeline import get_trained_xgboosts
+
+
 from classification_utils import create_run_pipelines
 
 parser = ArgumentParser()

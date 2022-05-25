@@ -13,9 +13,10 @@ from pywatts.modules import Sampler, CalendarExtraction, CalendarFeature, SKLear
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 
-from pywatts.summaries import ConfusionMatrix,  F1Score
-from pywatts.modules import StatisticFeature
-from utils import get_flat_output, get_reshaping
+from pywatts.summaries import F1Score
+from pywatts.summaries.confusion_matrix import ConfusionMatrix
+from pywatts.modules import StatisticFeature, StatisticExtraction
+from classification.utils import get_flat_output, get_reshaping
 
 
 def evaluate_classifiers(name, HORIZON, column, gen_scaler_list, data, filter=lambda data: data >= 1, supervised=True):
@@ -88,7 +89,7 @@ def get_preprocessing_pipeline(HORIZON, scaler, name="results/preprocessing",
     if scaler is not None:
         scaled = scaler(x=sliced, computation_mode=scale_computation_mode)
         FunctionModule(get_reshaping("target_scaled", horizon=96), name="target_scaled")(x=scaled)
-    t =StatisticExtractor(dim="horizon", features=[StatisticFeature.mean])(x=target)
+    t =StatisticExtraction(dim="horizon", features=[StatisticFeature.mean])(x=target)
     Slicer(start=HORIZON * 1 , name="stats")(x=t)
     t = Sampler(sample_size=HORIZON)(x=calendar)
     Slicer(start=HORIZON * 1 , name="calendar")(x=t)

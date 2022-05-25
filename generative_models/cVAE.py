@@ -8,7 +8,7 @@ from pywatts.core.filemanager import FileManager
 from pywatts.utils._xarray_time_series_utils import numpy_to_xarray
 from torch import nn
 
-from anomalyINN import GeneratorBase
+from generative_models.generator_base import GeneratorBase
 
 
 class CVAE(nn.Module):

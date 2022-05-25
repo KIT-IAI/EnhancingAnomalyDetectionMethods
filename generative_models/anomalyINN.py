@@ -10,7 +10,7 @@ from pywatts.utils._xarray_time_series_utils import numpy_to_xarray
 from torch import distributions
 
 from generative_models.generator_base import GeneratorBase
-from inn_base_functions import AnomalyINN
+from generative_models.inn_base_functions import AnomalyINN
 
 
 class INNWrapperBase(GeneratorBase, ABC):
