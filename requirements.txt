@@ -1,0 +1,4 @@
+git+https://github.com/KIT-IAI/pyWATTS@332a699af12b03c181de34a5a6d5e446968af451
+git+https://github.com/VLL-HD/FrEIA.git@b4e0c6ab42b26ec6e41b1ee2abb1a8b6562752b00
+xgboost==1.6.0
+
