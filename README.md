@@ -18,24 +18,27 @@ If you do not have any data available, you can download exemplary data by execut
 
 ### 3. Create Data with Synthetic Anomalies (optional)
 
-To create data with synthetic anomalies, you may either take a look into [AnomalyInsertion](https://github.com/KIT-IAI/GeneratingSyntheticEnergyPowerAnomalies) to generate technical anomalies or you use the generation_pipeine in the folder unusual_behaviour_ts_generation.
+Before applying the proposed method, you may want to create data with synthetic anomalies. You may generate anomalies of two groups: technical faults and unusual consumption.
+- For generating synthetic technical faults, take a look at the repository of the article ["Modeling and Generating Synthetic Anomalies for Energy and Power Time Series"](https://github.com/KIT-IAI/GeneratingSyntheticEnergyPowerAnomalies)
+- For generating unusual consumption, use the `generation_pipeline.py` in the folder unusual_behaviour_ts_generation.
+
 
 ## Enhancing Anomaly Detection Methods
 
-Finally, you can enhance anomaly detection methods for energy time series.
+Finally, you can enhance arbitrary anomaly detection methods for energy time series.
 
 ### Input
 
-To start the pipeline you can either use one of the scripts defined in the folder scripts or you can start run_classifiers or run_unsupervised_methods directly.  To start them directly consider to take a look on the needed command line arguments.
+To start the pipeline, you can either use one of the scripts defined in the folder scripts or start `run_classifiers.py` or `run_unsupervised_methods.py` directly. To start them directly, consider to take a look at the needed command line arguments.
 
 ### Output
 
-After running the command, the pipeline returns a folder called results/unusual or results/technical where the results are stored.
+After running the command, the pipeline returns a folder called results/unusual or results/technical where the results are saved.
 
 
 ## Funding
 
-This project is supported by the Helmholtz Association’s Initiative and Networking Fund through Helmholtz AI, by the Helmholtz Association under the Program “Energy System Design”,  the Helmholtz Metadata Collaboration, and by the German Research Foundation (DFG) Research Training Group 2153 "Energy Status Data: Informatics Methods for its Collection, Analysis and Exploitation".
+This project is supported by the Helmholtz Association’s Initiative and Networking Fund through Helmholtz AI, by the Helmholtz Association under the Program “Energy System Design”, the Helmholtz Metadata Collaboration, and by the German Research Foundation (DFG) Research Training Group 2153 "Energy Status Data: Informatics Methods for its Collection, Analysis and Exploitation".
 
 
 ## License
