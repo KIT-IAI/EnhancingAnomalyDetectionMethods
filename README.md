@@ -1,7 +1,7 @@
 # Enhancing Anomaly Detection Methods for Energy Time Series Using Latent Space Data Representations
 
 This repository contains the Python implementation of the approach to generally enhance anomaly detection methods for energy time series by taking advantage of their latent space representation. The approach is presented in the following paper:
->M. Turowski, B. Heidrich, K. Phipps, K. Schmieder, O. Neumann, R. Mikut, and V. Hagenmeyer, 2022, "Enhancing Anomaly Detection Methods for Energy Time Series Using Latent Space Data Representations," in The Thirteenth ACM International Conference on Future Energy Systems (e-Energy '22), doi: [10.1145/3538637.3538851](https://doi.org/10.1145/3538637.3538851).
+>M. Turowski, B. Heidrich, K. Phipps, K. Schmieder, O. Neumann, R. Mikut, and V. Hagenmeyer, 2022, "Enhancing Anomaly Detection Methods for Energy Time Series Using Latent Space Data Representations," in The Thirteenth ACM International Conference on Future Energy Systems (e-Energy ’22). ACM, pp. 208–227. doi: [10.1145/3538637.3538851](https://doi.org/10.1145/3538637.3538851).
 
 
 ## Installation
