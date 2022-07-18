@@ -28,12 +28,46 @@ Before applying the proposed method, you may want to create data with synthetic 
 Finally, you can enhance arbitrary anomaly detection methods for energy time series.
 
 ### Input
+The pipeline requires the following two input files (both in 15 minutes resolution):
+* in_train_ID200.csv
 
-To start the pipeline, you can either use one of the scripts defined in the folder scripts or start `run_classifiers.py` or `run_unsupervised_methods.py` directly. To start them directly, consider to take a look at the needed command line arguments.
+| Column name | Description                                                                                                                                                                           |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| time        | Date and time of each measurement (used as index), starting with 2011-01-01 00:15:00                                                                                                  |
+| y           | Measured power values (in kW) without anomalies (potentially replaced with realistic values (e.g., using the [Copy Paste Imputation](https://github.com/KIT-IAI/CopyPasteImputation)) |
+
+* out_train_ID200_{number of type 1 anomalies}\_{number of type 2 anomalies}\_{number of type 3 anomalies}\_{number of type 4 anomalies}_small.csv
+
+| Column name | Description                                                                                                                                                                           |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| time        | Date and time of each measurement (used as index), starting with 2011-01-01 00:15:00                                                                                                  |
+| y           | Measured power values (in kW) without anomalies (potentially replaced with realistic values (e.g., using the [Copy Paste Imputation](https://github.com/KIT-IAI/CopyPasteImputation)) |
+| anomalies   | Labels for inserted synthetic anomalies: 0 = no anomaly; 1 = anomaly of type 1; 2 = anomaly of type 2; etc.                                                                                                                                                                                      |
+
+
+### Execution
+To start the pipeline, you can either use one of the scripts defined in the folder scripts or start `run_classifiers.py` or `run_unsupervised_methods.py` directly. To start them directly, consider using the following command line arguments:
+
+```
+# Available arguments
+--anomalies
+    Number of anomalies (default=20)
+--generator-methods
+    The chosen generator: "cvae", "cinn", "cae" (default=["cinn", "cvae"])
+--hyperparams
+    Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
+--base
+    Used classifier: "knn", "lr", "mlp", "nb", "rf", "svc", "xgboost" (default="lr")
+--classes
+    Considered types of anomalies: "1", "2", "3", "4", "all" (default="all")
+--type
+    Considered group of anomalies: "technical", "unusual" (default="technical")
+```
+
 
 ### Output
 
-After running the command, the pipeline returns a folder called results/unusual or results/technical where the results are saved.
+After running the command, the pipeline returns a folder called results/unusual or results/technical where the respective results are saved.
 
 
 ## Funding
