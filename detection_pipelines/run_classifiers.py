@@ -5,7 +5,7 @@ import sys
 import pandas as pd
 from argparse import ArgumentParser
 
-#from cVAE import cVAEModule
+# from cVAE import cVAEModule
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
@@ -19,18 +19,20 @@ from inn_nb_pipeline import get_trained_nbs
 from inn_rf_pipeline import get_trained_rfs
 from inn_xgboost_pipeline import get_trained_xgboosts
 
-
 from classification_utils import create_run_pipelines
 
 parser = ArgumentParser()
-parser.add_argument("--anomalies", help="number of anomalies", type=int, default=20)
-parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"], default=["cinn", "cvae"])
-parser.add_argument("--hyperparams", help="Hyperparameter option", choices=['search', 'default', "optimal_technical", "optimal_unusual"], default='optimal_technical')
-parser.add_argument("--base", help="Base Classifier", choices=['knn', 'lr', 'mlp', 'nb', 'rf', 'svc', 'xgboost'], default="lr")
-parser.add_argument("--anomaly_types", help="Anomaly Type", choices=['1', '2', '3', '4', 'all'], default="all")
-parser.add_argument("--anomaly_group", help="Anomaly Classes", choices=['technical', 'unusual'], default="unusual")
-
-
+parser.add_argument("--anomalies", help="Number of anomalies", type=int, default=20)
+parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"],
+                    default=["cinn", "cvae"])
+parser.add_argument("--hyperparams", help="Hyperparameters used for classifiers",
+                    choices=['search', 'default', "optimal_technical", "optimal_unusual"], default='optimal_technical')
+parser.add_argument("--base", help="Used classifier", choices=['knn', 'lr', 'mlp', 'nb', 'rf', 'svc', 'xgboost'],
+                    default="lr")
+parser.add_argument("--anomaly_types", help="Considered types of anomalies", choices=['1', '2', '3', '4', 'all'],
+                    default="all")
+parser.add_argument("--anomaly_group", help="Considered group of anomalies", choices=['technical', 'unusual'],
+                    default="technical")
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -49,19 +51,19 @@ if __name__ == "__main__":
 
     name = f"{args.anomaly_group}/num_anomalies_{args.anomalies}/cl_{args.anomaly_types}/{args.base}/{args.hyperparams}/"
 
+    data = pd.read_csv(path, index_col=date_col, parse_dates=[date_col], infer_datetime_format=True)
 
-    data = pd.read_csv(path, index_col=date_col, parse_dates=[date_col],
-                        infer_datetime_format=True)
-                        
     from datetime import datetime
+
     custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
     if args.anomaly_group == "technical":
         test_data = pd.read_csv(test_path, index_col=date_col, parse_dates=[date_col],
-                            infer_datetime_format=True, date_parser=custom_date_parser)
+                                infer_datetime_format=True, date_parser=custom_date_parser)
 
     else:
         test_data = pd.read_csv(test_path[:-13] + "unusual.csv", index_col=date_col, parse_dates=[date_col],
-                            infer_datetime_format=True)
+                                infer_datetime_format=True)
 
-    create_run_pipelines(column, data, HORIZON, args.generator_methods, test_data, name, get_sklearn_modules=globals()[f"get_trained_{args.base}s"], gs=args.hyperparams)
+    create_run_pipelines(column, data, HORIZON, args.generator_methods, test_data, name,
+                         get_sklearn_modules=globals()[f"get_trained_{args.base}s"], gs=args.hyperparams)
     print("Finished main")

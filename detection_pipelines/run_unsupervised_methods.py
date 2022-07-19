@@ -3,9 +3,13 @@ import os
 import sys
 
 import pandas as pd
+from argparse import ArgumentParser
+from sklearn.neighbors import LocalOutlierFactor
+from sklearn.ensemble import IsolationForest
+from sklearn.covariance import EllipticEnvelope
+
 from pywatts.core.computation_mode import ComputationMode
 from pywatts.core.pipeline import Pipeline
-
 
 current_dir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
@@ -14,11 +18,6 @@ sys.path.insert(0, parent_dir)
 from modules.ae_anomaly_detector import AutoencoderDetection
 from detection_pipelines.classification_utils import train_sklearn_modules, get_generator, get_preprocessing_pipeline
 from detection_pipelines.classification_utils import get_trained_inn_wrappers, evaluate_classifiers
-from sklearn.neighbors import LocalOutlierFactor
-from sklearn.ensemble import IsolationForest
-from argparse import ArgumentParser
-
-from sklearn.covariance import EllipticEnvelope
 
 DATASETS = [
     ("y", "../data/in_train_ID200.csv", "2011-01-01 00:15:00", "time", 24 * 4, "15min", True,
@@ -29,13 +28,17 @@ COND_FEATURES = 4
 TRAINING_LENGTH = 10000
 
 parser = ArgumentParser()
-parser.add_argument("--anomalies", help="number of anomalies", type=int, default=20)
-parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"], default=["cinn"])#, "cvae"])
-parser.add_argument("--contaminations", help="Contaminations", nargs="*", type=float, default=[0.75, 0.8, 0.85, 0.9, 0.95, 0.99])
-parser.add_argument("--base", help="Base Classifier", choices=['iForest', 'LOF', 'Envelope', "AE", "VAE"], default="VAE")
-parser.add_argument("--anomaly_types", help="Anomaly Type", choices=['1', '2', '3', '4', 'all'], default="all")
-parser.add_argument("--anomaly_group", help="Anomaly Group", choices=['technical', 'unusual'], default="technical")
-
+parser.add_argument("--anomalies", help="Number of anomalies", type=int, default=20)
+parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"],
+                    default=["cinn"])
+parser.add_argument("--contaminations", help="Used contamination values for unsupervised methods", nargs="*",
+                    type=float, default=[0.75, 0.8, 0.85, 0.9, 0.95, 0.99])
+parser.add_argument("--base", help="Used unsupervised method", choices=['iForest', 'LOF', 'Envelope', "AE", "VAE"],
+                    default="VAE")
+parser.add_argument("--anomaly_types", help="Considered types of anomalies", choices=['1', '2', '3', '4', 'all'],
+                    default="all")
+parser.add_argument("--anomaly_group", help="Considered group of anomalies", choices=['technical', 'unusual'],
+                    default="technical")
 
 
 def create_run_pipelines(column, generator_methods, method, HORIZON, test_data, contamination):
@@ -58,29 +61,31 @@ def create_run_pipelines(column, generator_methods, method, HORIZON, test_data, 
                                test_data, contamination=contamination)
             gen_scaler_list.append((f"{name}/unscaled_sup:{supervised}", None, None, sk_module))
 
-        # Do not wonder about side-effects when using IsolationTree -> After each instatiation it is some bit different...
+        # Do not wonder about side-effects when using IsolationTree -> After each instantiation it is some bit different...
 
         # EVALUATE
-        evaluate_classifiers(name, HORIZON, column, gen_scaler_list, test_data[:],  supervised=False)
-
+        evaluate_classifiers(name, HORIZON, column, gen_scaler_list, test_data[:], supervised=False)
 
 
 def get_trained_iForests(name, HORIZON, column, inn_wrapper, scaler, data, contamination):
-    sk_module = IsolationForest(random_state=42, contamination=1-contamination)
+    sk_module = IsolationForest(random_state=42, contamination=1 - contamination)
     return train_sklearn_modules(HORIZON, column, data, inn_wrapper, sk_module, name, scaler, supervised=False)
+
 
 def get_trained_LOFs(name, HORIZON, column, inn_wrapper, scaler, data, contamination):
-    sk_module = LocalOutlierFactor(novelty=True, contamination=1-contamination)
+    sk_module = LocalOutlierFactor(novelty=True, contamination=1 - contamination)
     return train_sklearn_modules(HORIZON, column, data, inn_wrapper, sk_module, name, scaler, supervised=False)
 
+
 def get_trained_Envelopes(name, HORIZON, column, inn_wrapper, scaler, data, contamination):
-    sk_module = EllipticEnvelope(contamination=1-contamination)
+    sk_module = EllipticEnvelope(contamination=1 - contamination)
     return train_sklearn_modules(HORIZON, column, data, inn_wrapper, sk_module, name, scaler, supervised=False)
 
 
 def get_trained_VAEs(name, HORIZON, column, generator, scaler, data, contamination):
     ae_detector = AutoencoderDetection(threshold=contamination, method="vae")
     return train_ae_based_detection(HORIZON, ae_detector, column, data, generator, name, scaler)
+
 
 def get_trained_AEs(name, HORIZON, column, generator, scaler, data, contamination):
     ae_detector = AutoencoderDetection(threshold=contamination)
@@ -124,15 +129,15 @@ if __name__ == "__main__":
         test_path = f'../data/out_train_ID200_{args.anomalies if args.anomaly_types == "1" else "0"}_{args.anomalies if args.anomaly_types == "2" else "0"}_{args.anomalies if args.anomaly_types == "3" else "0"}_{args.anomalies if args.anomaly_types == "4" else "0"}_technical.csv'
 
     from datetime import datetime
+
     custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
     if args.anomaly_group == "technical":
         test_data = pd.read_csv(test_path, index_col=date_col, parse_dates=[date_col],
-                            infer_datetime_format=True, date_parser=custom_date_parser)
+                                infer_datetime_format=True, date_parser=custom_date_parser)
     else:
         test_data = pd.read_csv(test_path[:-13] + "unusual.csv", index_col=date_col, parse_dates=[date_col],
-                            infer_datetime_format=True)
+                                infer_datetime_format=True)
     for c in args.contaminations:
         create_run_pipelines(column, args.generator_methods, globals()[f"get_trained_{args.base}s"],
                              HORIZON, test_data, contamination=c)
         print("finished")
-

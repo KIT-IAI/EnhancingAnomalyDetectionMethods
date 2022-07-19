@@ -54,13 +54,16 @@ To start the pipeline, you can either use one of the scripts defined in the fold
     Number of anomalies (default=20)
 --generator-methods
     The chosen generator: "cvae", "cinn" (default=["cinn", "cvae"])
---hyperparams
-    Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
 --base
     Used classifier: "knn", "lr", "mlp", "nb", "rf", "svc", "xgboost" (default="lr")
---classes
+    or used unsupervised method: "iForest", "LOF", "Envelope", "AE", "VAE" (default="VAE")
+--hyperparams
+    Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
+--contaminations 
+    Contamination values used for unsupervised methods (default=[0.75, 0.8, 0.85, 0.9, 0.95, 0.99])
+--anomaly_types
     Considered types of anomalies: "1", "2", "3", "4", "all" (default="all")
---type
+--anomaly_group
     Considered group of anomalies: "technical", "unusual" (default="technical")
 ```
 
