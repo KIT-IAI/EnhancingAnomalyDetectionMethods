@@ -41,8 +41,8 @@ The pipeline requires the following two input files (both in 15 minutes resoluti
 | Column name | Description                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | time        | Date and time of each measurement (used as index), starting with 2011-01-01 00:15:00                                                                                                  |
-| y           | Measured power values (in kW) without anomalies (potentially replaced with realistic values (e.g., using the [Copy Paste Imputation](https://github.com/KIT-IAI/CopyPasteImputation)) |
-| anomalies   | Labels for inserted synthetic anomalies: 0 = no anomaly; 1 = anomaly of type 1; 2 = anomaly of type 2; etc.                                                                                                                                                                                      |
+| y           | Measured power values (in kW) with inserted synthetic or labeled anomalies |
+| anomalies   | Labels for inserted synthetic or labeled anomalies: 0 = no anomaly; 1 = anomaly of type 1; 2 = anomaly of type 2; etc.                                                                                                                                                                                      |
 
 
 ### Execution
