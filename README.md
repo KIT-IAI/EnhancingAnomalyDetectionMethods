@@ -27,8 +27,8 @@ Before applying the proposed method, you may want to create data with synthetic 
 
 Finally, you can enhance arbitrary anomaly detection methods for energy time series.
 
-### Input
-The pipeline requires the following two input files (both in 15 minutes resolution):
+### Input data
+The pipeline requires the following two input files in the project repository (both in 15 minutes resolution):
 * in_train_ID200.csv
 
 | Column name | Description                                                                                                                                                                           |
@@ -66,6 +66,20 @@ To start the pipeline, you can either use one of the scripts defined in the fold
 --anomaly_group
     Considered group of anomalies: "technical", "unusual" (default="technical")
 ```
+
+####Exemplary commands
+
+*Supervised anomaly detection*
+
+Run MLP with optimal hyperparameters on cINN and cVAE latent space with anomalies from group of technical faults (5 of each anomaly type): 
+
+`python run_classifiers.py --hyperparams optimal_technical --anomalies 5 --base mlp --generator-method cvae cinn --type technical`
+
+*Unsupervised anomaly detection*
+
+Run iForest with contamination of 0.95 on cINN and cVAE latent space with anomalies from group of unusual consumption (10 of each type):
+
+`python run_unsupervised_methods.py --anomalies 10 --base iForest --generator-method cvae cinn --contaminations 0.95  --type unusual`
 
 
 ### Output
