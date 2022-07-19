@@ -12,8 +12,8 @@ current_dir = os.path.dirname(os.path.abspath(
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 from modules.ae_anomaly_detector import AutoencoderDetection
-from classification.classification_utils import train_sklearn_modules, get_generator, get_preprocessing_pipeline
-from classification.classification_utils import get_trained_inn_wrappers, evaluate_classifiers
+from detection_pipelines.classification_utils import train_sklearn_modules, get_generator, get_preprocessing_pipeline
+from detection_pipelines.classification_utils import get_trained_inn_wrappers, evaluate_classifiers
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.ensemble import IsolationForest
 from argparse import ArgumentParser
@@ -30,16 +30,16 @@ TRAINING_LENGTH = 10000
 
 parser = ArgumentParser()
 parser.add_argument("--anomalies", help="number of anomalies", type=int, default=20)
-parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn", "cae"], default=["cinn"])#, "cvae", "cae"])
+parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"], default=["cinn"])#, "cvae"])
 parser.add_argument("--contaminations", help="Contaminations", nargs="*", type=float, default=[0.75, 0.8, 0.85, 0.9, 0.95, 0.99])
 parser.add_argument("--base", help="Base Classifier", choices=['iForest', 'LOF', 'Envelope', "AE", "VAE"], default="VAE")
-parser.add_argument("--classes", help="AnomalyClass", choices=['1', '2', '3', '4', 'all'], default="all")
-parser.add_argument("--type", help="AnomalyType", choices=['technical', 'unusual'], default="technical")
+parser.add_argument("--anomaly_types", help="Anomaly Type", choices=['1', '2', '3', '4', 'all'], default="all")
+parser.add_argument("--anomaly_group", help="Anomaly Group", choices=['technical', 'unusual'], default="technical")
 
 
 
 def create_run_pipelines(column, generator_methods, method, HORIZON, test_data, contamination):
-    name = f"{args.type}/num_anomalies_{args.anomalies}/cl_{args.classes}/{args.base}/con_{contamination}"
+    name = f"{args.anomaly_group}/num_anomalies_{args.anomalies}/cl_{args.anomaly_types}/{args.base}/con_{contamination}"
     for i in range(2):
         gen_scaler_list = []
         for supervised in [False]:
@@ -116,20 +116,20 @@ if __name__ == "__main__":
     HORIZON = 96
     freq = "15min"
     SCALING = True
-    name = f"Small_{args.anomalies}_{args.base}_{args.classes}"
+    name = f"Small_{args.anomalies}_{args.base}_{args.anomaly_types}"
 
-    if args.classes == "all":
-        test_path = f"../data/out_train_ID200_{args.anomalies}_{args.anomalies}_{args.anomalies}_{args.anomalies}_small.csv"
+    if args.anomaly_types == "all":
+        test_path = f"../data/out_train_ID200_{args.anomalies}_{args.anomalies}_{args.anomalies}_{args.anomalies}_technical.csv"
     else:
-        test_path = f'../data/out_train_ID200_{args.anomalies if args.classes == "1" else "0"}_{args.anomalies if args.classes == "2" else "0"}_{args.anomalies if args.classes == "3" else "0"}_{args.anomalies if args.classes == "4" else "0"}_small.csv'
+        test_path = f'../data/out_train_ID200_{args.anomalies if args.anomaly_types == "1" else "0"}_{args.anomalies if args.anomaly_types == "2" else "0"}_{args.anomalies if args.anomaly_types == "3" else "0"}_{args.anomalies if args.anomaly_types == "4" else "0"}_technical.csv'
 
     from datetime import datetime
-    custom_date_parser = lambda x: datetime.strptime(x, "%d.%m.%Y %H:%M")
-    if args.type == "technical":
+    custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
+    if args.anomaly_group == "technical":
         test_data = pd.read_csv(test_path, index_col=date_col, parse_dates=[date_col],
                             infer_datetime_format=True, date_parser=custom_date_parser)
     else:
-        test_data = pd.read_csv(test_path[:-9] + "unusual_behaviour.csv", index_col=date_col, parse_dates=[date_col],
+        test_data = pd.read_csv(test_path[:-13] + "unusual.csv", index_col=date_col, parse_dates=[date_col],
                             infer_datetime_format=True)
     for c in args.contaminations:
         create_run_pipelines(column, args.generator_methods, globals()[f"get_trained_{args.base}s"],

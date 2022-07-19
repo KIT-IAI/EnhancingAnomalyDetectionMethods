@@ -53,7 +53,7 @@ To start the pipeline, you can either use one of the scripts defined in the fold
 --anomalies
     Number of anomalies (default=20)
 --generator-methods
-    The chosen generator: "cvae", "cinn", "cae" (default=["cinn", "cvae"])
+    The chosen generator: "cvae", "cinn" (default=["cinn", "cvae"])
 --hyperparams
     Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
 --base

@@ -1,4 +1,4 @@
-cd ../classification
+cd ../detection_pipelines
 python run_classifiers.py --hyperparams optimal_technical --anomalies 5 --base nb --generator-method cvae cinn
 python run_classifiers.py --hyperparams optimal_technical --anomalies 10 --base nb --generator-method cvae cinn
 python run_classifiers.py --hyperparams optimal_technical --anomalies 20 --base nb --generator-method cvae cinn

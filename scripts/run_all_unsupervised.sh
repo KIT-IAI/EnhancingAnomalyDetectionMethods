@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ../classification
+cd ../detection_pipelines
 python run_unsupervised_methods.py --anomalies 10 --base iForest --generator-method cvae cinn --contaminations 0.95  --type unusual
 python run_unsupervised_methods.py --anomalies 30 --base iForest --generator-method cvae cinn --contaminations 0.85 --type unusual
 python run_unsupervised_methods.py --anomalies 40 --base iForest --generator-method cvae cinn --contaminations 0.8 --type unusual

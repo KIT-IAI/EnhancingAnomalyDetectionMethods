@@ -6,7 +6,7 @@ import pandas as pd
 from generative_models.cVAE import cVAEModule
 from generative_models.anomalyINN import INNWrapper
 
-from classification.config import GS, TRAINING_LENGTH
+from detection_pipelines.config import GS, TRAINING_LENGTH
 from pywatts.core.computation_mode import ComputationMode
 from pywatts.core.pipeline import Pipeline
 from pywatts.modules import Sampler, CalendarExtraction, CalendarFeature, SKLearnWrapper, FunctionModule, Slicer
@@ -16,7 +16,7 @@ from sklearn.preprocessing import StandardScaler
 from pywatts.summaries import F1Score
 from pywatts.summaries.confusion_matrix import ConfusionMatrix
 from pywatts.modules import StatisticFeature, StatisticExtraction
-from classification.utils import get_flat_output, get_reshaping
+from detection_pipelines.utils import get_flat_output, get_reshaping
 
 
 def evaluate_classifiers(name, HORIZON, column, gen_scaler_list, data, filter=lambda data: data >= 1, supervised=True):
