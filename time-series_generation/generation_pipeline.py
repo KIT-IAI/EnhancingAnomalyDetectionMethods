@@ -16,26 +16,25 @@ params = {
         "type1": {
             "length_params": {
                 'distribution': 'uniform',
-                'min': 3,
-                'max': 96
+                'min': 5,
+                'max': 24
             }
         },
         "type2": {
             "length_params": {
                 'distribution': 'uniform',
-                'min': 3,
-                'max': 96
+                'min': 5,
+                'max': 24
             },
         },
         "type3": {
             "anomaly_params": {
-                'is_extreme': True,
-                'range_r': (0.61, 1.62),
+                'limits': (0.01, 3.99),
             }
         },
         "type4": {
             "anomaly_params": {
-                'range_r': (1.15, 8.1),
+                'limits': (3, 5),
             }
         },
     },
@@ -79,7 +78,7 @@ def create_pipeline(hparams):
     if hparams.anomaly_group == "unusual":
         from pywatts.modules.generation.unusual_behaviour_generation import UnusualBehaviour as AnomalyModule
     else:
-        from pywatts.modules.generation.power_anomaly_generation_module import PowerAnomalyGeneration as AnomalyModule
+        from custom_anomaly_insertion_module import CustomAnomalyInsertion as AnomalyModule
 
     pipeline = Pipeline(path=os.path.join('run'))
     seed = 42
