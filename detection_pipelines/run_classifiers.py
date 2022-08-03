@@ -22,16 +22,7 @@ from inn_xgboost_pipeline import get_trained_xgboosts
 from classification_utils import create_run_pipelines
 
 parser = ArgumentParser()
-<<<<<<< HEAD
-parser.add_argument("--anomalies", help="number of anomalies", type=int, default=20)
-parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"], default=["cinn", "cvae"])
-parser.add_argument("--hyperparams", help="Hyperparameter option", choices=['search', 'default', "optimal_technical", "optimal_unusual"], default='optimal_technical')
-parser.add_argument("--base", help="Base Classifier", choices=['knn', 'lr', 'mlp', 'nb', 'rf', 'svc', 'xgboost'], default="lr")
-parser.add_argument("--anomaly_types", help="Anomaly Type", choices=['1', '2', '3', '4', 'all'], default="all")
-parser.add_argument("--anomaly_group", help="Anomaly Classes", choices=['technical', 'unusual'], default="technical")
 
-
-=======
 parser.add_argument("--anomalies", help="Number of anomalies", type=int, default=20)
 parser.add_argument("--generator-methods", nargs="*", help="The chosen generator", choices=["cvae", "cinn"],
                     default=["cinn", "cvae"])
@@ -43,7 +34,6 @@ parser.add_argument("--anomaly_types", help="Considered types of anomalies", cho
                     default="all")
 parser.add_argument("--anomaly_group", help="Considered group of anomalies", choices=['technical', 'unusual'],
                     default="technical")
->>>>>>> 9bcf60984d38fbe41ddd93d582dbda9f6e5be1b7
 
 if __name__ == "__main__":
     args = parser.parse_args()
