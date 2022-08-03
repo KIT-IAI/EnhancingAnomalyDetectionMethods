@@ -27,8 +27,8 @@ Before applying the proposed method, you may want to create data with synthetic 
 
 Finally, you can enhance arbitrary anomaly detection methods for energy time series.
 
-### Input
-The pipeline requires the following two input files (both in 15 minutes resolution):
+### Input data
+The pipeline requires the following two input files in the project repository (both in 15 minutes resolution):
 * in_train_ID200.csv
 
 | Column name | Description                                                                                                                                                                           |
@@ -41,8 +41,8 @@ The pipeline requires the following two input files (both in 15 minutes resoluti
 | Column name | Description                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | time        | Date and time of each measurement (used as index), starting with 2011-01-01 00:15:00                                                                                                  |
-| y           | Measured power values (in kW) without anomalies (potentially replaced with realistic values (e.g., using the [Copy Paste Imputation](https://github.com/KIT-IAI/CopyPasteImputation)) |
-| anomalies   | Labels for inserted synthetic anomalies: 0 = no anomaly; 1 = anomaly of type 1; 2 = anomaly of type 2; etc.                                                                                                                                                                                      |
+| y           | Measured power values (in kW) with inserted synthetic or labeled anomalies |
+| anomalies   | Labels for inserted synthetic or labeled anomalies: 0 = no anomaly; 1 = anomaly of type 1; 2 = anomaly of type 2; etc.                                                                                                                                                                                      |
 
 
 ### Execution
@@ -54,15 +54,32 @@ To start the pipeline, you can either use one of the scripts defined in the fold
     Number of anomalies (default=20)
 --generator-methods
     The chosen generator: "cvae", "cinn" (default=["cinn", "cvae"])
---hyperparams
-    Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
 --base
     Used classifier: "knn", "lr", "mlp", "nb", "rf", "svc", "xgboost" (default="lr")
---classes
+    or used unsupervised method: "iForest", "LOF", "Envelope", "AE", "VAE" (default="VAE")
+--hyperparams
+    Hyperparameters used for classifiers: "search", "default", "optimal_technical", "optimal_unusual" (default="optimal_unusual")
+--contaminations 
+    Contamination values used for unsupervised methods (default=[0.75, 0.8, 0.85, 0.9, 0.95, 0.99])
+--anomaly_types
     Considered types of anomalies: "1", "2", "3", "4", "all" (default="all")
---type
+--anomaly_group
     Considered group of anomalies: "technical", "unusual" (default="technical")
 ```
+
+####Exemplary commands
+
+*Supervised anomaly detection*
+
+Run MLP with optimal hyperparameters on cINN and cVAE latent space with anomalies from group of technical faults (5 of each anomaly type): 
+
+`python run_classifiers.py --hyperparams optimal_technical --anomalies 5 --base mlp --generator-method cvae cinn --type technical`
+
+*Unsupervised anomaly detection*
+
+Run iForest with contamination of 0.95 on cINN and cVAE latent space with anomalies from group of unusual consumption (10 of each type):
+
+`python run_unsupervised_methods.py --anomalies 10 --base iForest --generator-method cvae cinn --contaminations 0.95  --type unusual`
 
 
 ### Output
