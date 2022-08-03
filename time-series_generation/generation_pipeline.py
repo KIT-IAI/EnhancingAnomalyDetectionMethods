@@ -151,7 +151,7 @@ def parse_hparams(args=None):
     parser.add_argument('--type4', type=str2intorfloat, nargs='?', const=True, default=None,
                         help='Percentage or absolute number of type 4 anomalies.')
 
-    parser.add_argument('--anomaly_group', choices=["technical", "unusual"], default="unusual",
+    parser.add_argument('--anomaly_group', choices=["technical", "unusual"], default="technical",
                         help='Decide if the anomalies are technical or unusual behaviour.')
     # convert argument strings
     parsed_hparams = parser.parse_args(args=args)

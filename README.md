@@ -20,7 +20,7 @@ If you do not have any data available, you can download exemplary data by execut
 
 Before applying the proposed method, you may want to create data with synthetic anomalies. You may generate anomalies of two groups: technical faults and unusual consumption.
 - For generating synthetic technical faults, take a look at the repository of the article ["Modeling and Generating Synthetic Anomalies for Energy and Power Time Series"](https://github.com/KIT-IAI/GeneratingSyntheticEnergyPowerAnomalies)
-- For generating unusual consumption, use the `generation_pipeline.py` in the folder unusual_behaviour_ts_generation.
+- For generating unusual consumption and technical anomalies, use the `generation_pipeline.py` in the folder time-series_generation.
 
 
 ## Enhancing Anomaly Detection Methods

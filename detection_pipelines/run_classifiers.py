@@ -28,7 +28,7 @@ parser.add_argument("--generator-methods", nargs="*", help="The chosen generator
 parser.add_argument("--hyperparams", help="Hyperparameter option", choices=['search', 'default', "optimal_technical", "optimal_unusual"], default='optimal_technical')
 parser.add_argument("--base", help="Base Classifier", choices=['knn', 'lr', 'mlp', 'nb', 'rf', 'svc', 'xgboost'], default="lr")
 parser.add_argument("--anomaly_types", help="Anomaly Type", choices=['1', '2', '3', '4', 'all'], default="all")
-parser.add_argument("--anomaly_group", help="Anomaly Classes", choices=['technical', 'unusual'], default="unusual")
+parser.add_argument("--anomaly_group", help="Anomaly Classes", choices=['technical', 'unusual'], default="technical")
 
 
 
